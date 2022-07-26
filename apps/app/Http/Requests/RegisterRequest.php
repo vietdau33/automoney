@@ -15,7 +15,7 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => ['required', 'regex:/^[A-Za-z\d]{4,}$/i', 'unique:users,username'],
+            'username' => ['required', 'regex:/^[A-Za-z\d\.\_\-]{4,}$/i', 'unique:users,username'],
             'fullname' => 'required',
             'phone' => ['required', 'regex:/^\d{8,11}$/i', 'unique:user_info,phone'],
             'email' => 'required|email:rfc|unique:users,email',
@@ -28,7 +28,7 @@ class RegisterRequest extends FormRequest
     {
         return [
             'username.required' => 'username has required',
-            'username.regex' => 'Username can only contain lowercase, uppercase, numbers, and 4 or more characters',
+            'username.regex' => 'Username can only contain lowercase, uppercase, numbers, dot, strikethrough, underlined and 4 or more characters',
             'username.unique' => 'Username available',
             'fullname.required' => 'First and last name cannot be blank',
             'phone.required' => 'Phone number is empty',

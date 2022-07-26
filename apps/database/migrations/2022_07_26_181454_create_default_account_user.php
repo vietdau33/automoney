@@ -11,12 +11,14 @@ use Illuminate\Support\Str;
 return new class extends Migration
 {
     const ADMIN_REF = 'ADMINREF';
+    const ADMIN_PHONE = '01234556789';
 
     public function __construct()
     {
         $this->domain = env('APP_DOMAIN', 'local.host');
-        $this->faker = Faker::create('en');
+        $this->faker = Faker::create();
         $this->ref = [self::ADMIN_REF];
+        $this->phone = [self::ADMIN_PHONE];
     }
 
     public function up(): void
@@ -32,11 +34,12 @@ return new class extends Migration
             'username' => 'admin',
             'password' => Hash::make('admin1'),
             'reflink' => 'ADMINREF',
-            'role' => 'admin'
+            'role' => 'admin',
+            'is_active' => 1,
         ];
         $adminInfo = [
             'fullname' => 'Administator',
-            'phone' => '0123456780'
+            'phone' => self::ADMIN_PHONE
         ];
         $this->createUserAccount($admin, $adminInfo);
     }
@@ -44,7 +47,7 @@ return new class extends Migration
     private function createAccount1To6() {
         $defaultPassword = Hash::make('12345678');
 
-        for ($i = 1; $i <= 6; $i++) {
+        for ($i = 1; $i <= 10; $i++) {
             do {
                 $newRef = Str::random(8);
             } while (in_array($newRef, $this->ref));
@@ -54,12 +57,17 @@ return new class extends Migration
                 'username' => $this->faker->username,
                 'password' => $defaultPassword,
                 'reflink' => $newRef,
-                'upline_by' => end($this->ref)
+                'upline_by' => end($this->ref),
+                'level' => $i
             ];
+
+            do {
+                $newPhone = $this->faker->numerify('0123#######');
+            } while (in_array($newPhone, $this->phone));
 
             $userInfo = [
                 'fullname' => $this->faker->name,
-                'phone' => '012345678' . $i
+                'phone' => $newPhone
             ];
 
             $this->createUserAccount($user, $userInfo);

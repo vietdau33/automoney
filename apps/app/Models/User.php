@@ -36,6 +36,11 @@ class User extends Authenticatable
         return $this->belongsTo(UserInfo::class, 'id', 'user_id');
     }
 
+    public function sponsor(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'upline_by', 'reflink');
+    }
+
     public function wallet(): BelongsTo
     {
         return $this->belongsTo(UserWallet::class, 'id', 'user_id');

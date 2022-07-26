@@ -23,39 +23,14 @@
             List member
         </h5>
         <div class="form-search mb-3">
-            <form action="" method="POST" class="d-flex flex-wrap">
-                @csrf
-                <div class="form-group mb-0 p-1">
-                    <select name="level" class="form-control">
-                        <option value="1">Level 1</option>
-                        <option value="2">Level 2</option>
-                        <option value="3">Level 3</option>
-                        <option value="4">Level 4</option>
-                        <option value="5">Level 5</option>
-                        <option value="6">Level 6</option>
-                        <option value="7">Level 7</option>
-                    </select>
-                </div>
-                <div class="form-group mb-0 p-1">
-                    <input type="text" class="form-control" name="username" placeholder="Username">
-                </div>
-                <div class="form-group mb-0 p-1">
-                    <input type="text" class="form-control bs-datepicker" name="date-from" placeholder="{{ date('Y-m-d') }}">
-                </div>
-                <div class="form-group mb-0 p-1">
-                    <input type="text" class="form-control bs-datepicker" name="date-to" placeholder="{{ date('Y-m-d') }}">
-                </div>
-                <div class="form-group mb-0 p-1">
-                    <button type="submit" class="btn btn-primary">Search</button>
-                </div>
-            </form>
+            @include('form-search')
         </div>
         <div class="table-list-member">
             <div class="title-level mb-3">
                 <h5 class="color-white mb-0">Level 1</h5>
             </div>
             <div class="table-radius">
-                <table class="table table-striped text-center">
+                <table class="table table-striped text-center" id="table_list_member">
                     <thead>
                     <tr>
                         <th scope="col">No.</th>
@@ -67,37 +42,55 @@
                         <th scope="col">Status</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    </tbody>
+                    <tbody></tbody>
                 </table>
             </div>
         </div>
     </div>
+@endsection
+@section('script')
+    <script>
+        const tableListMember = document.querySelector('#table_list_member');
+        const selectLevel = document.querySelector('[name="level"]');
+        $(() => {
+            const listUsers = {!! json_encode($listUsers) !!};
+            Object.keys(listUsers).map(level => {
+                const option = $('<option />').val(level).text('Level ' + level);
+                $(selectLevel).append(option);
+            });
+            window.updateTableMember = () => {
+                let index = 1;
+                const level = $(selectLevel).val();
+                const $tbody = $(tableListMember).find('tbody');
+
+                $tbody.empty();
+
+                if (typeof listUsers[level] == 'undefined') {
+                    $tbody.append('<tr><td colspan="7">No user</td></tr>');
+                    return;
+                }
+
+                listUsers[level].map(user => {
+                    const $tr = $('<tr />');
+                    let status;
+                    if (user.is_active === 1) {
+                        status = '<span class="text-primary">Active</span>';
+                    } else {
+                        status = '<span class="text-danger">Not activated</span>';
+                    }
+                    $tr.append('<th scope="row">' + index++ + '</th>');
+                    $tr.append('<td>' + user.username + '</td>');
+                    $tr.append('<td>' + user.info.phone + '</td>');
+                    $tr.append('<td>' + user.email + '</td>');
+                    $tr.append('<td>' + (user.sponsor == null ? 'ROOT' : user.sponsor.username) + '</td>');
+                    $tr.append('<td>' + formatDate(user.created_at) + '</td>');
+                    $tr.append('<td>' + status + '</td>');
+                    $tbody.append($tr);
+                });
+            }
+            $(selectLevel).on('change', updateTableMember);
+            $(selectLevel).trigger('change');
+            console.log(listUsers)
+        });
+    </script>
 @endsection

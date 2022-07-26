@@ -108,3 +108,8 @@ if(typeof alertify != 'undefined') {
         $('.alertify').removeClassStartWith('alertify--').addClass('alertify--danger');
     }
 }
+
+window.formatDate = function(date) {
+    const d = new Date(date);
+    return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
+}

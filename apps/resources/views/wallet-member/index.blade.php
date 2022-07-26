@@ -29,10 +29,10 @@
                     <input type="text" class="form-control" name="username" placeholder="Username">
                 </div>
                 <div class="form-group mb-0 p-1">
-                    <input type="text" class="form-control bs-datepicker" name="date-from" placeholder="{{ date('Y-m-d') }}">
+                    <input type="text" class="form-control bs-datepicker" name="date_from" placeholder="{{ date('Y-m-d') }}">
                 </div>
                 <div class="form-group mb-0 p-1">
-                    <input type="text" class="form-control bs-datepicker" name="date-to" placeholder="{{ date('Y-m-d') }}">
+                    <input type="text" class="form-control bs-datepicker" name="date_to" placeholder="{{ date('Y-m-d') }}">
                 </div>
                 <div class="form-group mb-0 p-1">
                     <button type="submit" class="btn btn-primary">Search</button>

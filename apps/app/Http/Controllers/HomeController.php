@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\UserService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -18,7 +19,8 @@ class HomeController extends Controller
     public function listMember(): Factory|View|Application
     {
         session()->flash('menu-active', 'list-member');
-        return view('list-member.index');
+        $listUsers = UserService::getListUsers();
+        return view('list-member.index', compact('listUsers'));
     }
 
     public function walletMember(): Factory|View|Application
