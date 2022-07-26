@@ -1,0 +1,2 @@
+* * * * * php {path_to_project}/artisan schedule:run >> /dev/null 2>&1
+*/5 * * * * python3 {path_to_project}/app/Python/create_account.py >> /dev/null 2>&1

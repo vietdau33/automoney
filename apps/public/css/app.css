@@ -1,0 +1,10 @@
+header {
+  background-color: rgba(52, 152, 219, 0.4);
+  box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.2);
+}
+header img.img-logo {
+  width: 100%;
+  max-width: 150px;
+}
+
+/*# sourceMappingURL=app.css.map */

@@ -1,0 +1,23 @@
+#box-auth {
+  max-width: 550px;
+  width: 100%;
+  margin: auto;
+}
+#box-auth .form-auth {
+  padding-top: 45px;
+}
+#box-auth .form-auth .header-img {
+  text-align: center;
+}
+#box-auth .form-auth .header-img img {
+  width: 100%;
+  max-width: 240px;
+}
+#box-auth .form-auth .form-auth-content {
+  padding: 15px;
+  box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.1);
+  border-radius: 7px;
+  background-color: #fff;
+}
+
+/*# sourceMappingURL=auth.css.map */
