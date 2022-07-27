@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Http\JsonResponse;
 
 function logined(): bool
 {
@@ -29,4 +30,22 @@ function convertViToEn($str): string
     $str = preg_replace("/(Ỳ|Ý|Ỵ|Ỷ|Ỹ)/", "Y", $str);
     //$str = str_replace(" ", "-", str_replace("&*#39;","",$str));
     return preg_replace("/(Đ)/", "D", $str);
+}
+
+function jsonError($mgs, $datas = []): JsonResponse
+{
+    return response()->json([
+        'success' => 0,
+        'message' => $mgs,
+        'datas' => $datas
+    ]);
+}
+
+function jsonSuccess($mgs, $datas = []): JsonResponse
+{
+    return response()->json([
+        'success' => 1,
+        'message' => $mgs,
+        'datas' => $datas
+    ]);
 }

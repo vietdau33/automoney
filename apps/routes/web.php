@@ -28,6 +28,7 @@ Route::middleware('is_guest')->group(function () {
 Route::middleware('is_customer')->group(function() {
     Route::get('list-member', [HomeController::class, 'listMember'])->name('list-member');
     Route::get('wallet-member', [HomeController::class, 'walletMember'])->name('wallet-member');
+    Route::post('wallet-member/edit', [HomeController::class, 'walletMemberEdit'])->name('wallet-member.edit');
     Route::get('report', [HomeController::class, 'reports'])->name('report');
 });
 

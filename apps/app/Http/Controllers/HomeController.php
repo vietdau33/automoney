@@ -6,7 +6,9 @@ use App\Http\Services\UserService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -26,7 +28,16 @@ class HomeController extends Controller
     public function walletMember(): Factory|View|Application
     {
         session()->flash('menu-active', 'wallet-member');
-        return view('wallet-member.index');
+        $users = UserService::getListPaginateUsers();
+        return view('wallet-member.index', compact('users'));
+    }
+
+    public function walletMemberEdit(Request $request): JsonResponse
+    {
+        if(user()->is_user) {
+            return jsonError('You not an admin!');
+        }
+        return UserService::editAddressWallet($request);
     }
 
     public function reports(): Factory|View|Application

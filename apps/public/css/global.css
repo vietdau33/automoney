@@ -79,3 +79,13 @@ input.number-only {
 .table-radius table {
     margin-bottom: 0;
 }
+
+.pagination {
+    margin-bottom: 0;
+    padding: 4px;
+    justify-content: center;
+}
+
+.pagination .page-link {
+    padding: .25rem .75rem;
+}

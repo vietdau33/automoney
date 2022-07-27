@@ -23,21 +23,7 @@
             Wallet member
         </h5>
         <div class="form-search mb-3">
-            <form action="" method="POST" class="d-flex flex-wrap">
-                @csrf
-                <div class="form-group mb-0 p-1">
-                    <input type="text" class="form-control" name="username" placeholder="Username">
-                </div>
-                <div class="form-group mb-0 p-1">
-                    <input type="text" class="form-control bs-datepicker" name="date_from" placeholder="{{ date('Y-m-d') }}">
-                </div>
-                <div class="form-group mb-0 p-1">
-                    <input type="text" class="form-control bs-datepicker" name="date_to" placeholder="{{ date('Y-m-d') }}">
-                </div>
-                <div class="form-group mb-0 p-1">
-                    <button type="submit" class="btn btn-primary">Search</button>
-                </div>
-            </form>
+            @include('form-search')
         </div>
         <div class="table-wallet-member">
             <div class="table-radius">
@@ -51,26 +37,25 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
+                        @php($stt = 1)
+                        @foreach($users as $user)
+                            <tr>
+                                <th scope="row">{{ $stt++ }}</th>
+                                <td>{{ $user->username }}</td>
+                                <td>{{ $user->info->address_wallet }}</td>
+                                <td>
+                                    <button
+                                        class="btn btn-info"
+                                        onclick="openModelEditWallet('{{ $user->id }}', '{{ $user->username }}', '{{ $user->info->address_wallet }}')"
+                                    >
+                                        Edit
+                                    </button>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
+                {!! $users->links() !!}
             </div>
         </div>
     </div>
@@ -80,22 +65,53 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header color-white" style="background-color: #16a3fe">
-                    <h5 class="modal-title text-uppercase" id="modalEditWalletLabel">Edit wallet: <span data-item="username"></span></h5>
+                    <h5 class="modal-title text-uppercase" id="modalEditWalletLabel">Edit wallet: <span style="font-size: 1.25rem" data-item="username"></span></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="POST">
+                    <form action="{{ route('wallet-member.edit') }}" method="POST" onsubmit="return EditAddressWallet(this)">
+                        <input type="hidden" name="userid">
                         <div class="form-group">
-                            <input type="text" class="form-control" value="aaaa">
+                            <input type="text" class="form-control" name="address_wallet">
                         </div>
                         <div class="form-group text-center">
-                            <button class="btn btn-primary w-75">Update</button>
+                            <button class="btn btn-primary btn-update-wallet w-75">Update</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        const modal = document.querySelector('#modalEditWallet');
+        window.openModelEditWallet = function(userid, username, user_address_wallet) {
+            $(modal).find('[data-item="username"]').text(username);
+            $(modal).find('[name="userid"]').val(userid);
+            $(modal).find('[name="address_wallet"]').val(user_address_wallet);
+            $(modal).modal();
+        }
+        window.EditAddressWallet = function(form) {
+            const url = form.getAttribute('action');
+            const formData = new FormData(form);
+            $(form).find('.btn-update-wallet').prop('disabled', true);
+            Request.ajax(url, formData, function(result) {
+                if(result.success === 1) {
+                    $(modal).modal('hide');
+                    return alertify.alertSuccess(result.message, function() {
+                        location.reload();
+                    });
+                }
+                $(modal).fadeOut(100);
+                $('.modal-backdrop').fadeOut(100);
+                alertify.alertDanger(result.message, function() {
+                    $(modal).fadeIn(100);
+                    $('.modal-backdrop').fadeIn(100);
+                    $(form).find('.btn-update-wallet').prop('disabled', false);
+                });
+            });
+            return false;
+        }
+    </script>
 @endsection

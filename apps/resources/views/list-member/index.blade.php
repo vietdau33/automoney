@@ -23,7 +23,7 @@
             List member
         </h5>
         <div class="form-search mb-3">
-            @include('form-search')
+            @include('form-search', ['is_list_member' => true])
         </div>
         <div class="table-list-member">
             <div class="title-level mb-3">
