@@ -47,7 +47,7 @@ return new class extends Migration
     private function createAccount1To6() {
         $defaultPassword = Hash::make('12345678');
 
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 1; $i <= 7; $i++) {
             do {
                 $newRef = Str::random(8);
             } while (in_array($newRef, $this->ref));
