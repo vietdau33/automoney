@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Services\UserService;
+use App\Models\DepositLogs;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -42,6 +43,7 @@ class HomeController extends Controller
     public function reports(): Factory|View|Application
     {
         session()->flash('menu-active', 'report');
-        return view('report.index');
+        $logs = DepositLogs::getLogs();
+        return view('report.index', compact('logs'));
     }
 }

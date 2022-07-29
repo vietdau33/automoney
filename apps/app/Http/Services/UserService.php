@@ -36,7 +36,7 @@ class UserService
         return $users->paginate($paginate);
     }
 
-    private static function setSearchQuery(&$query): void
+    public static function setSearchQuery(&$query): void
     {
         $request = request();
         if (!empty($request->username)) {

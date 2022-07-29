@@ -23,21 +23,7 @@
             Report Bonus
         </h5>
         <div class="form-search mb-3">
-            <form action="" method="POST" class="d-flex flex-wrap">
-                @csrf
-                <div class="form-group mb-0 p-1">
-                    <input type="text" class="form-control" name="username" placeholder="Username">
-                </div>
-                <div class="form-group mb-0 p-1">
-                    <input type="text" class="form-control bs-datepicker" name="date_from" placeholder="{{ date('Y-m-d') }}">
-                </div>
-                <div class="form-group mb-0 p-1">
-                    <input type="text" class="form-control bs-datepicker" name="date_to" placeholder="{{ date('Y-m-d') }}">
-                </div>
-                <div class="form-group mb-0 p-1">
-                    <button type="submit" class="btn btn-primary">Search</button>
-                </div>
-            </form>
+            @include('form-search')
         </div>
         <div class="table-report">
             <div class="table-radius">
@@ -52,29 +38,24 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
+                    @php($stt = 1)
+                    @foreach($logs as $log)
+                        <tr>
+                            <th scope="row">{{ $stt++ }}</th>
+                            <td>{{ $log->created_at }}</td>
+                            <td>{{ $log->user->username }}</td>
+                            <td>{{ $log->user->level - user()->level }}</td>
+                            <td>{{ number_format($log->amount, 2) }}</td>
+                        </tr>
+                    @endforeach
+                    @if($logs->count() <= 0)
+                        <tr>
+                            <td colspan="5">No logs</td>
+                        </tr>
+                    @endif
                     </tbody>
                 </table>
+                {!! $logs->links() !!}
             </div>
         </div>
     </div>
